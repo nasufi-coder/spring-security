@@ -23,7 +23,6 @@ public class WebSecurityConfig {
     @Autowired
     private JwtAuthenticationFilter authenticationJwtTokenFilter;
 
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -45,7 +44,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/authenticate/**")
                         .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/enable/**")
+                        .requestMatchers("/user/**")
                         .hasAuthority("ADMIN")
                         .anyRequest()
                         .authenticated())
