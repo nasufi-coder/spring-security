@@ -6,11 +6,13 @@ import com.automotive.models.entity.UserEntity;
 import com.automotive.repository.UserRepository;
 import com.automotive.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -36,5 +38,20 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findByUsername(userId).orElseThrow(() -> new IllegalArgumentException("Not able to find user with username " + userId));
         user.setEnabled(true);
     }
+
+    @Override
+    public Optional<UserEntity> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public UserEntity getLoggedInUsser() {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Optional<UserEntity> user = findByUsername(userDetails.getUsername());
+        return user.orElse(null);
+    }
+
 
 }

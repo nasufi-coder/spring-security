@@ -2,9 +2,9 @@ package com.automotive.service;
 
 import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     void createUser(UserEntity userEntity);
@@ -12,4 +12,8 @@ public interface UserService {
     List<UserDto> getUsers();
 
     void enableUser(String userId);
+
+    Optional<UserEntity> findByUsername(String username);
+
+    UserEntity getLoggedInUsser();
 }
