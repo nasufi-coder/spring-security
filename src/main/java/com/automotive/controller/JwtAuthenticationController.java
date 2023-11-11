@@ -30,32 +30,5 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 public class JwtAuthenticationController {
-    private AuthenticationManager authenticationManager;
-
-    private JwtTokenUtil jwtUtils;
-
-    private UserServiceImpl userDetailsService;
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationController.class);
-
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody JwtRequest loginRequest) throws Exception {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
-
-            UserEntity userDetails = (UserEntity) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
-            logger.info(userDetails.getUsername() + " is logged in!");
-            return ResponseEntity.ok(new JwtResponse(jwt,
-                    userDetails.getUsername(),
-                    roles));
-        } catch (Exception exception) {
-            return ResponseEntity.ok(new MessageResponse(exception.getMessage()));
-        }
-    }
 
 }

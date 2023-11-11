@@ -22,8 +22,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public void createUser(UserEntity userEntity) {
+    public void saveUser(UserEntity userEntity) {
+        var isExistingUser=findByUsername(userEntity.getUsername());
+        if(isExistingUser.isPresent()){
+            throw new IllegalArgumentException("User with this username is already registered!");
+        }
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
+        userEntity.setAccountNonLocked(true);
         userRepository.save(userEntity);
     }
 
@@ -34,9 +39,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto getOne(String username) {
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Not able to find user with username " + username));
+        return userMapper.toDto(user);
+    }
+
+    @Override
     public void enableUser(String userId) {
         var user = userRepository.findByUsername(userId).orElseThrow(() -> new IllegalArgumentException("Not able to find user with username " + userId));
         user.setEnabled(true);
+        userRepository.save(user);
     }
 
     @Override
@@ -46,7 +58,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getLoggedInUsser() {
-
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Optional<UserEntity> user = findByUsername(userDetails.getUsername());

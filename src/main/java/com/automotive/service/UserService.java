@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void createUser(UserEntity userEntity);
+    void saveUser(UserEntity userEntity);
 
     List<UserDto> getUsers();
+
+    UserDto getOne(String username);
 
     void enableUser(String userId);
 
