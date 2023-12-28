@@ -30,7 +30,7 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     private JwtTokenUtil jwtUtils;
     private UserService userService;
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody JwtRequest loginRequest) throws Exception {
@@ -60,6 +60,15 @@ public class UserController {
         return ResponseEntity
                 .ok()
                 .body(new MessageResponse("User is successfully created!"));
+    }
+
+    //register a new user
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody UserEntity userEntity) throws Exception {
+        userService.updateUser(userEntity);
+        return ResponseEntity
+                .ok()
+                .body(new MessageResponse("User is successfully updated!"));
     }
 
 

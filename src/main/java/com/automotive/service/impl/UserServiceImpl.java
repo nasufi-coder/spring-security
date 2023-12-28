@@ -23,11 +23,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(UserEntity userEntity) {
-        var isExistingUser=findByUsername(userEntity.getUsername());
-        if(isExistingUser.isPresent()){
+        var isExistingUser = findByUsername(userEntity.getUsername());
+        if (isExistingUser.isPresent()) {
             throw new IllegalArgumentException("User with this username is already registered!");
         }
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
+        userEntity.setAccountNonLocked(true);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updateUser(UserEntity userEntity) {
+        var isExistingUser = findByUsername(userEntity.getUsername());
+        if (isExistingUser.isEmpty()) {
+            throw new IllegalArgumentException("User with this username is not registered!");
+        }
+        var loggedInUser = this.getLoggedInUsser();
+        if (!loggedInUser.getUsername().equals(userEntity.getUsername())) {
+            throw new IllegalArgumentException("This user is not allowed to modify user with username: " + userEntity.getUsername());
+        }
+        userEntity.setId(isExistingUser.get().getId());
+        userEntity.setEnabled(isExistingUser.get().isEnabled());
         userEntity.setAccountNonLocked(true);
         userRepository.save(userEntity);
     }

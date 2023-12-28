@@ -29,6 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
         try {
+
+            if (requestTokenHeader == null) {
+                throw new IllegalArgumentException("Token header should not be empty");
+            }
             String jwt = requestTokenHeader.substring(6);
             if (jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
@@ -54,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //we dont want to filter token for authentication
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)
-            throws ServletException{
+            throws ServletException {
         String path = request.getRequestURI();
         return path.contains("login") || path.contains("user/save");
     }

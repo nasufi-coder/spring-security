@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface UserService {
     void saveUser(UserEntity userEntity);
 
+    void updateUser(UserEntity userEntity);
+
     List<UserDto> getUsers();
 
     UserDto getOne(String username);

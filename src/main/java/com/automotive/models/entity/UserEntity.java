@@ -24,9 +24,9 @@ import java.util.Set;
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false)
     private String username;
     private String firstName;
     private String lastName;
@@ -37,7 +37,8 @@ public class UserEntity implements UserDetails {
     private boolean isEnabled;
     @OneToMany(mappedBy = "ownedBy")
     private Set<AutoEntity> autos;
-
+    @OneToMany(mappedBy = "bookedBy")
+    private Set<BookEntity> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

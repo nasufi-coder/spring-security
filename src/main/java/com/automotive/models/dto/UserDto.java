@@ -8,6 +8,8 @@ import java.util.Date;
 @Data
 public class UserDto {
 
+    private Integer id;
+
     private String username;
 
     private String firstName;
