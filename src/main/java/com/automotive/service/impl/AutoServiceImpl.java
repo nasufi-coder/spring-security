@@ -39,4 +39,11 @@ public class AutoServiceImpl implements AutoService {
         var auto = autoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not able to find auto with id " + id));
         return autoMapper.toDto(auto);
     }
+
+    @Override
+    public void deleteOne(Integer id) {
+        var autoToDeleteDto= getOne(id);
+        var autoToDeleteModel=autoMapper.toModel(autoToDeleteDto);
+        autoRepository.delete(autoToDeleteModel);
+    }
 }

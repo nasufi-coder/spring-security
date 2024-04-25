@@ -6,6 +6,7 @@ import com.automotive.models.dto.UserDto;
 import com.automotive.service.AutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,5 +39,13 @@ public class AutoController {
     @GetMapping("/{id}")
     public AutoDTO getUsers(@PathVariable Integer id) throws Exception {
         return autoService.getOne(id);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteAuto(@PathVariable Integer id){
+        autoService.deleteOne(id);
+        return ResponseEntity
+                .ok()
+                .body(new MessageResponse(String.format("Auto with id {} is successfully deleted!",id)));
     }
 }

@@ -11,4 +11,6 @@ public interface AutoService {
     List<AutoDTO> getAll();
 
     AutoDTO getOne(Integer id);
+
+    void deleteOne(Integer id);
 }
