@@ -38,7 +38,7 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "ownedBy")
     private Set<AutoEntity> autos;
     @OneToMany(mappedBy = "bookedBy")
-    private Set<BookEntity> bookings;
+    private Set<BookingEntity> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

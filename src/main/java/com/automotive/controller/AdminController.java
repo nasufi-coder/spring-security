@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @AllArgsConstructor
 public class AdminController {
-    UserService userService;
+    private UserService userService;
 
     //Enable user
     @PostMapping("/enable/{username}")

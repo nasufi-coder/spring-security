@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AutoController {
 
-    AutoService autoService;
+    private AutoService autoService;
 
     @PostMapping("/save")
     public ResponseEntity<?> register(@RequestBody AutoDTO autoDTO) throws Exception {

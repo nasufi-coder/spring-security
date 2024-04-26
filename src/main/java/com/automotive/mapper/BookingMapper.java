@@ -1,8 +1,7 @@
 package com.automotive.mapper;
 
-
-import com.automotive.models.dto.AutoDTO;
-import com.automotive.models.entity.AutoEntity;
+import com.automotive.models.dto.BookingDto;
+import com.automotive.models.entity.BookingEntity;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueMappingStrategy;
@@ -13,11 +12,12 @@ import java.util.List;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL
 )
-public interface AutoMapper {
+public interface BookingMapper {
 
-    AutoEntity toModel(AutoDTO autoDTO);
+    BookingEntity toModel(BookingDto bookingDto);
 
-    AutoDTO toDto(AutoEntity autoEntity);
+    BookingDto toDto(BookingEntity bookingEntity);
 
-    List<AutoDTO> toDtoList(List<AutoEntity> autoEntities);
+    List<BookingDto> toDtoList(List<BookingEntity> bookingEntities);
+
 }
