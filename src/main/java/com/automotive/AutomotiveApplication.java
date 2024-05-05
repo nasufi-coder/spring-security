@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(
         version = "1.0",
-        description = "My API",
+        description = "This is the open api for car rental",
         title = "Car Rental"))
 public class AutomotiveApplication {
     public static void main(String[] args) {

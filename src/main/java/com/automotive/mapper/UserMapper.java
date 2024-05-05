@@ -1,5 +1,6 @@
 package com.automotive.mapper;
 
+import com.automotive.models.dto.UserDetailsDto;
 import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
 import org.mapstruct.InjectionStrategy;
@@ -18,5 +19,7 @@ public interface UserMapper {
     UserDto toDto(UserEntity userEntity);
 
     List<UserDto> toDtoList(List<UserEntity> userEntities);
+
+    UserEntity toModel(UserDetailsDto userDetailsDto);
 
 }

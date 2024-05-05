@@ -1,5 +1,6 @@
 package com.automotive.service;
 
+import com.automotive.models.dto.UserDetailsDto;
 import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
 
@@ -7,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void saveUser(UserEntity userEntity);
+    void saveUser(UserDetailsDto userDetailsDto);
 
-    void updateUser(UserEntity userEntity);
+    void updateUser(UserDetailsDto userDetailsDto);
 
     List<UserDto> getUsers();
 

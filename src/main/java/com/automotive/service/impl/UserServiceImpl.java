@@ -1,6 +1,7 @@
 package com.automotive.service.impl;
 
 import com.automotive.mapper.UserMapper;
+import com.automotive.models.dto.UserDetailsDto;
 import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
 import com.automotive.repository.UserRepository;
@@ -22,29 +23,33 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public void saveUser(UserEntity userEntity) {
-        var isExistingUser = findByUsername(userEntity.getUsername());
+    public void saveUser(UserDetailsDto userDto) {
+        var isExistingUser = findByUsername(userDto.getUsername());
         if (isExistingUser.isPresent()) {
             throw new IllegalArgumentException("User with this username is already registered!");
         }
-        userEntity.setPassword(encoder.encode(userEntity.getPassword()));
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
+        var userEntity = userMapper.toModel(userDto);
         userEntity.setAccountNonLocked(true);
         userRepository.save(userEntity);
     }
 
     @Override
-    public void updateUser(UserEntity userEntity) {
-        var isExistingUser = findByUsername(userEntity.getUsername());
+    public void updateUser(UserDetailsDto userDto) {
+        var isExistingUser = findByUsername(userDto.getUsername());
         if (isExistingUser.isEmpty()) {
             throw new IllegalArgumentException("User with this username is not registered!");
         }
         var loggedInUser = this.getLoggedInUsser();
-        if (!loggedInUser.getUsername().equals(userEntity.getUsername())) {
-            throw new IllegalArgumentException("This user is not allowed to modify user with username: " + userEntity.getUsername());
+        if (!loggedInUser.getUsername().equals(userDto.getUsername())) {
+            throw new IllegalArgumentException("This user is not allowed to modify user with username: " + userDto.getUsername());
         }
-        userEntity.setId(isExistingUser.get().getId());
+        userDto.setId(isExistingUser.get().getId());
+
+        var userEntity = userMapper.toModel(userDto);
         userEntity.setEnabled(isExistingUser.get().isEnabled());
         userEntity.setAccountNonLocked(true);
+
         userRepository.save(userEntity);
     }
 
