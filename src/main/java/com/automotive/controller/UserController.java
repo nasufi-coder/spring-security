@@ -3,7 +3,6 @@ package com.automotive.controller;
 import com.automotive.configurations.jwtconfig.JwtTokenUtil;
 import com.automotive.models.MessageResponse;
 import com.automotive.models.dto.UserDetailsDto;
-import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
 import com.automotive.models.jwt.JwtRequest;
 import com.automotive.models.jwt.JwtResponse;
@@ -64,7 +63,7 @@ public class UserController {
                 .body(new MessageResponse("User is successfully created!"));
     }
 
-    //register a new user
+    //update a new user
     @PostMapping("/update")
     public ResponseEntity<?> update(@RequestBody UserDetailsDto userDetailsDto) throws Exception {
         userService.updateUser(userDetailsDto);

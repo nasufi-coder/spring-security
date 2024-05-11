@@ -28,9 +28,24 @@ public class AutoServiceImpl implements AutoService {
     }
 
     @Override
-    public List<AutoDTO> getAll() {
+    public void freeAuto(Integer autoId) {
+        var loggedInUser = userService.getLoggedInUsser();
+        var auto = autoRepository.findOneByUser(loggedInUser.getId(), autoId)
+                .orElseThrow(() -> new IllegalArgumentException("This auto does not exists in your repository"));
+        auto.setIsBooked(false);
+        autoRepository.save(auto);
+    }
+
+    @Override
+    public List<AutoDTO> getMyAll() {
         var loggedInUser = userService.getLoggedInUsser();
         var autos = autoRepository.findByUser(loggedInUser.getId());
+        return autoMapper.toDtoList(autos);
+    }
+
+    @Override
+    public List<AutoDTO> getAll() {
+        var autos = autoRepository.findAll();
         return autoMapper.toDtoList(autos);
     }
 
@@ -40,10 +55,11 @@ public class AutoServiceImpl implements AutoService {
         return autoMapper.toDto(auto);
     }
 
+
     @Override
     public void deleteOne(Integer id) {
-        var autoToDeleteDto= getOne(id);
-        var autoToDeleteModel=autoMapper.toModel(autoToDeleteDto);
+        var autoToDeleteDto = getOne(id);
+        var autoToDeleteModel = autoMapper.toModel(autoToDeleteDto);
         autoRepository.delete(autoToDeleteModel);
     }
 }

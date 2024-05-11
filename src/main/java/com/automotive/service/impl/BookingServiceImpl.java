@@ -8,6 +8,8 @@ import com.automotive.service.BookingService;
 import com.automotive.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -36,9 +38,39 @@ public class BookingServiceImpl implements BookingService {
         var autoId = bookingDto.getAutoId();
         var autoToBook = autoRepository.findById(autoId).orElseThrow(() -> new IllegalArgumentException("Not able to find auto with id " + autoId));
 
+
+        //check if auto is already booked
+        var isAutoBooked =bookingRepository.findOneByAuto(autoId).isPresent();
+        if(isAutoBooked){
+            throw new IllegalArgumentException("This auto is already booked by another client!");
+        }
+
         bookingModel.setBookedBy(loggedInUser);
         bookingModel.setBookedAuto(autoToBook);
 
         bookingRepository.save(bookingModel);
+
+        autoToBook.setIsBooked(true);
+        autoRepository.save(autoToBook);
+    }
+
+    @Override
+    public List<BookingDto> getAll() {
+        //get the user which is making the request
+        var loggedInUser = userService.getLoggedInUsser();
+        var bookings = bookingRepository.findByUser(loggedInUser.getId());
+        return bookingMapper.toDtoList(bookings);
+    }
+
+    @Override
+    public BookingDto getOne(Integer bookingId) {
+        var loggedInUser = userService.getLoggedInUsser();
+        var bookedAuto = bookingRepository.findOneByUserAndBooking(loggedInUser.getId(),bookingId).orElseThrow(() -> new IllegalArgumentException("Not able to find booking with id " + bookingId));
+        return bookingMapper.toDto(bookedAuto);
+    }
+
+    @Override
+    public void deleteOne(Integer id) {
+
     }
 }

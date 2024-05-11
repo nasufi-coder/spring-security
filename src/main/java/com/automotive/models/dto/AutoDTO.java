@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class AutoDTO {
 
+    private Integer id;
+
     private String brand;
 
     private String model;
@@ -14,5 +16,7 @@ public class AutoDTO {
     private String year;
 
     private String price;
+
+    private Boolean isBooked;
 
 }

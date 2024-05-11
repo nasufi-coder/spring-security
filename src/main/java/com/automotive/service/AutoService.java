@@ -8,7 +8,11 @@ public interface AutoService {
 
     void saveAuto(AutoDTO autoDTO);
 
+    void freeAuto(Integer autoID);
+
     List<AutoDTO> getAll();
+
+    List<AutoDTO> getMyAll();
 
     AutoDTO getOne(Integer id);
 

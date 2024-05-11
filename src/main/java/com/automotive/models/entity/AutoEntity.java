@@ -22,6 +22,7 @@ public class AutoEntity {
     private String type;
     private String year;
     private String price;
+    private Boolean isBooked = false;
 
     @ManyToOne()
     @JoinColumn(name = "ownedBy", referencedColumnName = "id")
