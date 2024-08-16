@@ -21,15 +21,14 @@ public class BookingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String description;
-    private LocalDateTime bookedAt;
+    private LocalDateTime bookedFrom;
     private LocalDateTime bookedUntil;
 
     @ManyToOne()
     @JoinColumn(name = "bookedBy", referencedColumnName = "id")
     private UserEntity bookedBy;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "bookedAuto", referencedColumnName = "id")
     private AutoEntity bookedAuto;
 

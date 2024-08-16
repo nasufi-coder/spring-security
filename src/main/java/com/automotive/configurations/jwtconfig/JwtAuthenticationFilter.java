@@ -55,12 +55,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    //we dont want to filter token for authentication
+    //we don't want to filter token for authentication
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         String path = request.getRequestURI();
-        return path.contains("login") || path.contains("user/save") ||  path.contains("swagger")  ;
+        return path.contains("login") || path.contains("user/save") || path.contains("swagger") || path.contains("api-docs");
     }
 
 }

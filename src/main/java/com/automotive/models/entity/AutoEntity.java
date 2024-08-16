@@ -6,8 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,5 +30,8 @@ public class AutoEntity {
     @ManyToOne()
     @JoinColumn(name = "ownedBy", referencedColumnName = "id")
     private UserEntity ownedBy;
+
+    @OneToMany(mappedBy = "bookedAuto")
+    private Set<BookingEntity> bookings;
 
 }

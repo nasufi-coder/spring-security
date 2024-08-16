@@ -30,6 +30,12 @@ public class BookingController {
                 .body(new MessageResponse("Auto is successfully booked!"));
     }
 
+
+    @GetMapping("/cars/{carId}/booked-dates")
+    public List<Object[]> getBookedDates(@PathVariable Integer carId) {
+        return bookingService.getBookedDatesForCar(carId);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<BookingDto>> getAll() throws Exception {
 

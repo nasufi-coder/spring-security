@@ -25,7 +25,7 @@ public class AdminController {
         userService.enableUser(username);
         return ResponseEntity
                 .ok()
-                .body(new MessageResponse("User is successfully enabled!"));
+                .body(new MessageResponse("Changed successfully!"));
     }
 
     @GetMapping("/user/all")

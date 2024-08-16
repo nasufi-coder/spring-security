@@ -9,6 +9,7 @@ public interface BookingService {
     void saveBooking(BookingDto bookingDto);
 
     List<BookingDto> getAll();
+    List<Object[]> getBookedDatesForCar(Integer autoID);
 
     BookingDto getOne(Integer id);
 

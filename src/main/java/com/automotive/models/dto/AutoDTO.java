@@ -2,6 +2,8 @@ package com.automotive.models.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AutoDTO {
 
@@ -16,6 +18,8 @@ public class AutoDTO {
     private String year;
 
     private String price;
+
+    private List<Object[]> bookedDates;
 
     private Boolean isBooked;
 

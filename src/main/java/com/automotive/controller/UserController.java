@@ -3,6 +3,7 @@ package com.automotive.controller;
 import com.automotive.configurations.jwtconfig.JwtTokenUtil;
 import com.automotive.models.MessageResponse;
 import com.automotive.models.dto.UserDetailsDto;
+import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
 import com.automotive.models.jwt.JwtRequest;
 import com.automotive.models.jwt.JwtResponse;
@@ -16,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +64,11 @@ public class UserController {
         return ResponseEntity
                 .ok()
                 .body(new MessageResponse("User is successfully created!"));
+    }
+
+    @GetMapping("/{username}")
+    public UserDto getUsers(@PathVariable String username){
+        return userService.getOne(username);
     }
 
     //update a new user

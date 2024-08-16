@@ -3,12 +3,15 @@ package com.automotive.service.impl;
 import com.automotive.mapper.AutoMapper;
 import com.automotive.models.dto.AutoDTO;
 import com.automotive.repository.AutoRepository;
+import com.automotive.repository.BookingRepository;
 import com.automotive.service.AutoService;
+import com.automotive.service.BookingService;
 import com.automotive.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +20,7 @@ public class AutoServiceImpl implements AutoService {
     private final AutoRepository autoRepository;
     private final AutoMapper autoMapper;
     private final UserService userService;
+    private final BookingRepository bookingRepository;
 
 
     @Override
@@ -46,7 +50,17 @@ public class AutoServiceImpl implements AutoService {
     @Override
     public List<AutoDTO> getAll() {
         var autos = autoRepository.findAll();
-        return autoMapper.toDtoList(autos);
+        return autos.stream().map(auto -> {
+            AutoDTO autoDTO = autoMapper.toDto(auto);
+
+            // Retrieve booked dates for this auto
+            var bookedDates = bookingRepository.findBookedDatesByCarId(auto.getId());
+
+            // Assign booked dates to AutoDTO
+            autoDTO.setBookedDates(bookedDates);
+
+            return autoDTO;
+        }).toList();
     }
 
     @Override

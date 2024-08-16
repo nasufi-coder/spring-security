@@ -4,6 +4,7 @@ import com.automotive.mapper.UserMapper;
 import com.automotive.models.dto.UserDetailsDto;
 import com.automotive.models.dto.UserDto;
 import com.automotive.models.entity.UserEntity;
+import com.automotive.models.entity.enums.RoleEnum;
 import com.automotive.repository.UserRepository;
 import com.automotive.service.UserService;
 import lombok.AllArgsConstructor;
@@ -41,8 +42,10 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User with this username is not registered!");
         }
         var loggedInUser = this.getLoggedInUsser();
-        if (!loggedInUser.getUsername().equals(userDto.getUsername())) {
-            throw new IllegalArgumentException("This user is not allowed to modify user with username: " + userDto.getUsername());
+        if (!loggedInUser.getRole().equals(RoleEnum.ADMIN)) {
+            if (!loggedInUser.getUsername().equals(userDto.getUsername())) {
+                throw new IllegalArgumentException("This user is not allowed to modify user with username: " + userDto.getUsername());
+            }
         }
         userDto.setId(isExistingUser.get().getId());
 
@@ -61,6 +64,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getOne(String username) {
+        var loggedInUser = this.getLoggedInUsser();
+        if (!loggedInUser.getRole().equals(RoleEnum.ADMIN)) {
+            if (!loggedInUser.getUsername().equals(username)) {
+                throw new IllegalArgumentException("This user is not allowed to modify user with username: " + username);
+            }
+        }
         var user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Not able to find user with username " + username));
         return userMapper.toDto(user);
     }
@@ -68,7 +77,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void enableUser(String userId) {
         var user = userRepository.findByUsername(userId).orElseThrow(() -> new IllegalArgumentException("Not able to find user with username " + userId));
-        user.setEnabled(true);
+        if (user.isEnabled()) {
+            user.setEnabled(false);
+        }
+        else {
+            user.setEnabled(true);
+
+        }
         userRepository.save(user);
     }
 

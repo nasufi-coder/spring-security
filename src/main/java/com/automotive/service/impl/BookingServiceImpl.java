@@ -40,9 +40,9 @@ public class BookingServiceImpl implements BookingService {
 
 
         //check if auto is already booked
-        var isAutoBooked =bookingRepository.findOneByAuto(autoId).isPresent();
-        if(isAutoBooked){
-            throw new IllegalArgumentException("This auto is already booked by another client!");
+        var isAutoBooked =bookingRepository.findAllByBookedAutoAndBookedFromLessThanEqualAndBookedUntilGreaterThanEqual(autoToBook,bookingDto.getBookedFrom(),bookingDto.getBookedUntil()).isEmpty();
+        if(!isAutoBooked){
+            throw new IllegalArgumentException("This auto is already booked at those days!");
         }
 
         bookingModel.setBookedBy(loggedInUser);
@@ -52,6 +52,11 @@ public class BookingServiceImpl implements BookingService {
 
         autoToBook.setIsBooked(true);
         autoRepository.save(autoToBook);
+    }
+
+    @Override
+    public List<Object[]> getBookedDatesForCar(Integer carId) {
+        return bookingRepository.findBookedDatesByCarId(carId);
     }
 
     @Override
