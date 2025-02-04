@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Integer>
 
     @Transactional
     @Query(nativeQuery = true, value = "Select * from bookings where booked_By = ?1 and id = ?2")
-    Optional<BookingEntity> findOneByUserAndBooking(Integer userID, Integer bookingID );
+    Optional<BookingEntity> findOneByUserAndBooking(Integer userID, Integer bookingID);
 
     @Transactional
     @Query(nativeQuery = true, value = "Select * from bookings where booked_Auto = ?1")
@@ -30,6 +30,11 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Integer>
     @Query("SELECT b.bookedFrom, b.bookedUntil FROM BookingEntity b WHERE b.bookedAuto.id = :carId")
     List<Object[]> findBookedDatesByCarId(@Param("carId") Integer carId);
 
-    List<BookingEntity> findAllByBookedAutoAndBookedFromLessThanEqualAndBookedUntilGreaterThanEqual(
-            AutoEntity autoId, LocalDateTime bookedUntil, LocalDateTime bookedFrom);
+    @Query("SELECT b FROM BookingEntity b WHERE b.bookedAuto = :auto AND " +
+            "(b.bookedFrom < :endDate AND b.bookedUntil > :startDate)")
+    List<BookingEntity> findOverlappingBookings(
+            @Param("auto") AutoEntity auto,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 }

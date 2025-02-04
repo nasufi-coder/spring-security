@@ -40,8 +40,12 @@ public class BookingServiceImpl implements BookingService {
 
 
         //check if auto is already booked
-        var isAutoBooked =bookingRepository.findAllByBookedAutoAndBookedFromLessThanEqualAndBookedUntilGreaterThanEqual(autoToBook,bookingDto.getBookedFrom(),bookingDto.getBookedUntil()).isEmpty();
-        if(!isAutoBooked){
+        var overlappingBookings = bookingRepository.findOverlappingBookings(
+                autoToBook,
+                bookingDto.getBookedFrom(),
+                bookingDto.getBookedUntil()
+        );
+        if (!overlappingBookings.isEmpty()) {
             throw new IllegalArgumentException("This auto is already booked at those days!");
         }
 
@@ -70,7 +74,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto getOne(Integer bookingId) {
         var loggedInUser = userService.getLoggedInUsser();
-        var bookedAuto = bookingRepository.findOneByUserAndBooking(loggedInUser.getId(),bookingId).orElseThrow(() -> new IllegalArgumentException("Not able to find booking with id " + bookingId));
+        var bookedAuto = bookingRepository.findOneByUserAndBooking(loggedInUser.getId(), bookingId).orElseThrow(() -> new IllegalArgumentException("Not able to find booking with id " + bookingId));
         return bookingMapper.toDto(bookedAuto);
     }
 

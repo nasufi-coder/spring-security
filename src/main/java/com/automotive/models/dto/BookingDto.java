@@ -2,17 +2,16 @@ package com.automotive.models.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 public class BookingDto {
 
     private Integer id;
 
-    private LocalDateTime bookedFrom;
+    private LocalDate bookedFrom;
 
-    private LocalDateTime bookedUntil;
+    private LocalDate bookedUntil;
 
     private Integer autoId;
 

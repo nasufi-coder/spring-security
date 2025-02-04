@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -28,22 +29,31 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "username", nullable = false)
     private String username;
+
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private RoleEnum role;
+
     private boolean isAccountNonLocked;
     private boolean isEnabled;
+
+    // New field to store the photo as a blob
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] photo;
+
     @OneToMany(mappedBy = "ownedBy")
     private Set<AutoEntity> autos;
+
     @OneToMany(mappedBy = "bookedBy")
     private Set<BookingEntity> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(getRole().toString()));
+        authorities.add(new SimpleGrantedAuthority(getRole().toString()));
         return authorities;
     }
 
@@ -57,5 +67,5 @@ public class UserEntity implements UserDetails {
         return true;
     }
 
-
+    // Other UserDetails methods are implemented as required...
 }
