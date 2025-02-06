@@ -24,11 +24,11 @@ public class AutoServiceImpl implements AutoService {
 
 
     @Override
-    public void saveAuto(AutoDTO autoDTO) {
+    public Integer saveAuto(AutoDTO autoDTO) {
         var autoEntity = autoMapper.toModel(autoDTO);
         var loggedInUser = userService.getLoggedInUsser();
         autoEntity.setOwnedBy(loggedInUser);
-        autoRepository.save(autoEntity);
+        return autoRepository.save(autoEntity).getId();
     }
 
     @Override

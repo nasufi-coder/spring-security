@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AutoService {
 
-    void saveAuto(AutoDTO autoDTO);
+    Integer saveAuto(AutoDTO autoDTO);
 
     void freeAuto(Integer autoID);
 

@@ -23,10 +23,10 @@ public class AutoController {
 
     @PostMapping("/save")
     public ResponseEntity<?> register(@RequestBody AutoDTO autoDTO) throws Exception {
-        autoService.saveAuto(autoDTO);
+        var id = autoService.saveAuto(autoDTO);
         return ResponseEntity
                 .ok()
-                .body(new MessageResponse("Auto is successfully added!"));
+                .body(id);
     }
 
     @PostMapping("/free/{id}")
